@@ -1,0 +1,7 @@
+{
+  "name": "estoyentulistaweb",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
