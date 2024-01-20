@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Añadir Nuevo Cliente
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="stacked">Nombre Completo</ion-label>
+    <ion-input [(ngModel)]="newClient.name" placeholder="Nombre"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Número de Invitados</ion-label>
+    <ion-input type="number" [(ngModel)]="newClient.guests" placeholder="Número de Invitados"></ion-input>
+  </ion-item>
+
+  <ion-button expand="full" (click)="saveClient()">Guardar</ion-button>
+</ion-content>

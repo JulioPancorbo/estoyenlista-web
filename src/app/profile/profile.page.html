@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Perfil de Usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      Información del Usuario
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Email:</ion-label>
+        <ion-text>{{ user?.email }}</ion-text>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="full" (click)="logout()">Cerrar Sesión</ion-button>
+</ion-content>
