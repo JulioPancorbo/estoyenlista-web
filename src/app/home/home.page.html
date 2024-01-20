@@ -15,6 +15,7 @@
     <ion-item *ngFor="let client of filteredClients">
       {{ client.name }} - Invitados: {{ client.guests }}
     </ion-item>
+    <p *ngIf="clients.length === 0">Este RRPP aún no tiene clientes añadidos</p>
   </ion-list>
 
   <!-- Botón para ir al perfil -->

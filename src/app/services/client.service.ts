@@ -41,10 +41,10 @@ export class ClientService {
     this.clientId = docRef.id;
 
     if (this.clientId) {
-      console.log('¡Cliente creado correctamente!');      
+      console.log('¡Cliente creado correctamente!');
       return true;
     } else {
-      console.log('Error al crear el cliente');      
+      console.log('Error al crear el cliente');
       return false;
     }
   }
@@ -53,7 +53,9 @@ export class ClientService {
   //   //
   // }
 
-  // getClientsByUser(): Observable<Client[]> { //get all clients by user (for rrpp users)
-  //   //
-  // }
+  getClientsByUserId(userId: string): Observable<Client[]> { //get all clients by user (for rrpp users)
+    const clientsRef = collection(this.firestore, 'clients');
+    const userClientsQuery = query(clientsRef, where('user_id', '==', userId));
+    return collectionData(userClientsQuery, { idField: 'id' }) as Observable<Client[]>;
+  }
 }
