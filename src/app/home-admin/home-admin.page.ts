@@ -7,6 +7,7 @@ import {
 } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 import { ClientService } from '../services/client.service';
+import { PartiesService } from '../services/parties.service';
 
 @Component({
   selector: 'app-home-admin',
@@ -23,46 +24,8 @@ export class HomeAdminPage implements OnInit {
   public rrppSelected: any;
   public isAPartySelected: boolean = false;
   public isARrppSelected: boolean = false;  
-  public parties: any[] = [
-    {
-      id: 1,
-      name: 'Fiesta de prueba 1',
-      place: 'Lugar de prueba 1',
-      date: '2020-10-10',
-    },
-    {
-      id: 2,
-      name: 'Fiesta de prueba 2',
-      place: 'Lugar de prueba 2',
-      date: '2020-10-11',
-    },
-    {
-      id: 3,
-      name: 'Fiesta de prueba 3',
-      place: 'Lugar de prueba 3',
-      date: '2020-10-12',
-    },
-  ];
-  public rrpps: any[] = [
-    {
-      id: 1,
-      name: 'Juanito Pérez',
-      surname: 'Apellido 1',
-      email: 'prueba@email.com',
-    },
-    {
-      id: 2,
-      name: 'RRPP 2',
-      surname: 'Apellido 2',
-      email: 'prueba2@email.com',
-    },
-    {
-      id: 3,
-      name: 'Laura',
-      surname: 'Apellido 3',
-      email: 'prueba3@email.com',
-    },
-  ];
+  public parties: any;
+  public rrpps: any;
 
   constructor(
     private modalController: ModalController,
@@ -70,7 +33,8 @@ export class HomeAdminPage implements OnInit {
     private loadingController: LoadingController,
     private navCtrl: NavController,
     private authService: AuthService,
-    private clientService: ClientService
+    private clientService: ClientService,
+    private partiesService: PartiesService
   ) {}
 
   ngOnInit() {}
@@ -81,14 +45,28 @@ export class HomeAdminPage implements OnInit {
 
   getUserInfo() {
     this.authService.getUserProfile().subscribe((data) => {
-      this.user = data;
-      if (data) {
-        this.user['avatarImg'] = data['avatarImg'];
-      }
+      this.user = data;      
       console.log('user', this.user);
       console.log('userid', this.user.id);
 
-      //getParties();
+      if(this.user) {
+        this.getParties();
+        this.getRRPPs();
+      }
+    });
+  }
+
+  getParties() {
+    this.partiesService.getAllParties().subscribe((parties) => {
+      console.log('parties', parties);
+      this.parties = parties;
+    });
+  }
+
+  getRRPPs() {
+    this.partiesService.getRRPPs().subscribe((rrpps) => {
+      console.log('rrpps', rrpps);
+      this.rrpps = rrpps;
     });
   }
 

@@ -34,7 +34,7 @@ const routes: Routes = [
   {
     path: 'rrpp-details',
     loadChildren: () => import('./rrpp-details/rrpp-details.module').then( m => m.RrppDetailsPageModule)
-  },
+  }
 ];
 
 @NgModule({
