@@ -15,19 +15,18 @@ export interface User {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class AuthService {
-
-  constructor(
-    private auth: Auth,
-    private firestore: Firestore,
-  ) { }
+  constructor(private auth: Auth, private firestore: Firestore) {}
 
   async register(email: string, password: string, name: string) {
     try {
-      const user = await createUserWithEmailAndPassword(this.auth, email, password);
+      const user = await createUserWithEmailAndPassword(
+        this.auth,
+        email,
+        password
+      );
       if (user?.user) {
         await this.createProfile(user.user, email, password, name);
       }
@@ -52,21 +51,33 @@ export class AuthService {
     this.auth.signOut();
   }
 
-  async createProfile(user: any, email: string, password: string, name: string) {
+  async createProfile(
+    user: any,
+    email: string,
+    password: string,
+    name: string
+  ) {
     const userDocRef = doc(this.firestore, `users/${user.uid}`); // Create a reference to the user document
-    await setDoc(userDocRef, { email: email, password: password, name: name, role: 'rrpp' }); // Set the document
+    await setDoc(userDocRef, {
+      email: email,
+      password: password,
+      name: name,
+      role: 'rrpp',
+    }); // Set the document
     //* The role is set as 'rrpp' by default. To add an 'adminrrpp', add it from Firebase console.
   }
 
-  async getCurrentUser() { // Get the current user
+  getCurrentUser() {
+    // Get the current user
     const user = this.auth.currentUser;
     return user;
   }
 
-  getUserProfile() { // Get the user profile with its document data
+  getUserProfile() {
+    // Get the user profile with its document data
     const user: any = this.auth.currentUser; // Get the current user
     console.log('user', user);
-    
+
     if (user) {
       const userDocRef = doc(this.firestore, `users/${user.uid}`); // Get the reference to the user document
       return docData(userDocRef, { idField: 'id' }) as Observable<User>; // Get the user document data as an observable with the id field
@@ -75,4 +86,9 @@ export class AuthService {
     }
   }
 
+  getUserProfileById(userId: any) {
+    // Get the user profile with its document data
+    const userDocRef = doc(this.firestore, `users/${userId}`); // Get the reference to the user document
+    return docData(userDocRef, { idField: 'id' }) as Observable<User>; // Get the user document data as an observable with the id field
+  }
 }

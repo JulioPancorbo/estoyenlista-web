@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 
@@ -10,13 +10,9 @@ import { AlertController, LoadingController } from '@ionic/angular';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  // credentials: FormGroup = this.fb.group({
-  //   email: ['', [Validators.required, Validators.email]],
-  //   password: ['', [Validators.required, Validators.minLength(6)]]
-  // });
-
   email: string = '';
   password: string = '';
+  user: any;
 
   constructor(
     private fb: FormBuilder,
@@ -36,13 +32,28 @@ export class LoginPage implements OnInit {
     await loading.dismiss();
 
     if (user) {
-      this.router.navigateByUrl('/home', { replaceUrl: true });
+      console.log('userAuth: ', user);
+      await this.getRole();
     } else {
       this.showAlert(
         'Error al iniciar sesión',
         'Por favor, comprueba que tu correo electrónico y contraseña sean correctos.'
       );
     }
+  }
+
+  async getRole() {
+    this.authService.getUserProfile().subscribe((data) => {
+      this.user = data;
+      console.log('userProfile: ', this.user);
+      console.log('userid: ', this.user.id);
+
+      if (this.user.role === 'adminrrpp') {
+        this.router.navigateByUrl('/home-admin');
+      } else {
+        this.router.navigateByUrl('/home');
+      }
+    });
   }
 
   async showAlert(header: string, message: string) {

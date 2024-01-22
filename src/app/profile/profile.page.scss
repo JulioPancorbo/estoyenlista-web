@@ -1,0 +1,19 @@
+ion-header {
+  box-shadow: none;
+
+  ion-toolbar {
+    --background: var(--ion-color-primary);
+
+    ion-back-button {
+      color: var(--ion-color-light);
+    }
+
+    ion-menu-button {
+      color: var(--ion-color-light);
+    }
+
+    ion-title {
+      color: var(--ion-color-light);
+    }
+  }
+}
