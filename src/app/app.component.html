@@ -8,7 +8,7 @@
         </ion-toolbar>
       </ion-header>
       <ion-content>
-        <ion-list>
+        <ion-list *ngIf="role == 'rrpp'">
           <ion-item (click)="navigateTo('home')">
             <ion-icon name="home" slot="start"></ion-icon>
             <ion-label>Inicio</ion-label>
@@ -19,8 +19,20 @@
           </ion-item>
           <!-- Agrega más elementos según tus páginas -->
         </ion-list>
+        
+        <ion-list *ngIf="role == 'adminrrpp'">
+          <ion-item (click)="navigateTo('home-admin')">
+            <ion-icon name="home" slot="start"></ion-icon>
+            <ion-label>Inicio</ion-label>
+          </ion-item>
+          <ion-item (click)="navigateTo('profile')">
+            <ion-icon name="person" slot="start"></ion-icon>
+            <ion-label>Perfil</ion-label>
+          </ion-item>
+          <!-- Agrega más elementos según tus páginas -->
+        </ion-list>
       </ion-content>
-    </ion-menu>
+    </ion-menu>    
 
     <!-- Contenido principal -->
     <ion-router-outlet id="main-content"></ion-router-outlet>

@@ -1,5 +1,6 @@
 ion-menu {
     border-right: 2px solid var(--ion-color-primary); // Añade un borde a la derecha del menú
+    width: auto !important;
 }
 
 ion-list {
