@@ -13,6 +13,11 @@
 
 <ion-content>
   <ion-item>
+    <ion-label position="stacked">Evento</ion-label>
+    <p>{{ party?.name }}</p>
+  </ion-item>
+
+  <ion-item>
     <ion-label position="stacked">Nombre Completo</ion-label>
     <ion-input [(ngModel)]="newClient.name" placeholder="Nombre"></ion-input>
   </ion-item>

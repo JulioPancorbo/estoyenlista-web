@@ -13,6 +13,7 @@ import { take } from 'rxjs/operators';
 export interface Client {
   id?: string;
   name: string;
+  partyId: string;
   guests: number;
   guests_confirmed?: number;
   createdAt?: Timestamp;
@@ -49,13 +50,21 @@ export class ClientService {
     }
   }
 
-  // getClients(): Observable<Client[]> { //get all clients (for adminrrpp users only)
-  //   //
-  // }
+  getAllClientsByPartyId(): Observable<Client[]> { //get all clients from a party (for adminrrpp users only)
+    const clientsRef = collection(this.firestore, 'clients');
+    const partyClientsQuery = query(clientsRef, where('partyId', '==', this.clientId));
+    return collectionData(partyClientsQuery, { idField: 'id' }) as Observable<Client[]>;
+  }
 
   getClientsByUserId(userId: string): Observable<Client[]> { //get all clients by user (for rrpp users)
     const clientsRef = collection(this.firestore, 'clients');
     const userClientsQuery = query(clientsRef, where('user_id', '==', userId));
+    return collectionData(userClientsQuery, { idField: 'id' }) as Observable<Client[]>;
+  }
+
+  getClientsByUserIdAndPartyId(userId: string, partyId: string): Observable<Client[]> { //get all clients by user and party (for both rrpp users)
+    const clientsRef = collection(this.firestore, 'clients');
+    const userClientsQuery = query(clientsRef, where('user_id', '==', userId), where('partyId', '==', partyId));
     return collectionData(userClientsQuery, { idField: 'id' }) as Observable<Client[]>;
   }
 }

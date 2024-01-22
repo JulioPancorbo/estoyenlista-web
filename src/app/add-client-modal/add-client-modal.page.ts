@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { ClientService } from '../services/client.service';
 
 
@@ -10,15 +10,20 @@ import { ClientService } from '../services/client.service';
 })
 export class AddClientModalPage implements OnInit {
 
-  newClient = { name: "", guests: 0 };
+  newClient = { name: "", guests: 0, partyId: "" };
+  party: any;
 
   constructor(
     private modalController: ModalController,
     private clientService: ClientService,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private navParams: NavParams
   ) { }
 
   ngOnInit() {
+    //recibir partyId del ComponentProps
+    this.party = this.navParams.get("party");
+    console.log('partyId: ', this.party);    
   }
 
   saveClient() {
@@ -28,6 +33,8 @@ export class AddClientModalPage implements OnInit {
       alert("El nombre del cliente no puede estar vacío");
       return;
     }
+
+    this.newClient.partyId = this.party.id;
 
     this.clientService.addClient(this.newClient).then((res) => {
       if (res === true) {
@@ -44,7 +51,8 @@ export class AddClientModalPage implements OnInit {
           alert.present();
         });
 
-        this.modalController.dismiss(this.newClient);
+        this.modalController.dismiss();
+        // this.newClient;
       } else {
         alert("Error al crear el cliente");
       }
