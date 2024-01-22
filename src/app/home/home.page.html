@@ -1,5 +1,8 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>
       Bienvenido {{ user?.name }} !
     </ion-title>
@@ -8,23 +11,23 @@
 
 <ion-content>
   <!-- Barra de búsqueda -->
-  <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterClients()"></ion-searchbar>
+  <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterClients()" placeholder="Busca aquí..."></ion-searchbar>
+
+  <!-- Botón para ir al perfil -->
+  <ion-button expand="full" fill="clear" (click)="openAddClientModal()">
+    <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+    Añadir cliente
+  </ion-button>
 
   <!-- Lista de clientes -->
   <ion-list>
-    <ion-item *ngFor="let client of filteredClients">
-      {{ client.name }} - Invitados: {{ client.guests }}
+    <ion-item *ngFor="let client of filteredClients" lines="none">
+      <div>
+        <span class="client-name"> {{ client.name }} </span>
+        <span> - Invitados: {{ client.guests }}</span>
+        <span> - Confirmados: {{ client.guests_confirmed }} </span>
+      </div>
     </ion-item>
-    <p *ngIf="clients.length === 0">Este RRPP aún no tiene clientes añadidos</p>
+    <p *ngIf="clients.length === 0">Aún no tienes clientes añadidos</p>
   </ion-list>
-
-  <!-- Botón para ir al perfil -->
-  <ion-button expand="full" (click)="goToProfile()">Ir a Perfil</ion-button>
-
-  <!-- Botón para añadir nuevo cliente -->
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="openAddClientModal()">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 </ion-content>

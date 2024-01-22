@@ -11,6 +11,7 @@ import { ClientService } from '../services/client.service';
 })
 export class HomePage {
 
+  public currentUser: any;
   public user: any;
   public clients: any[] = [];
   public filteredClients: any[] = [];
@@ -25,24 +26,32 @@ export class HomePage {
     private clientService: ClientService
   ) { }
 
-  ngOnInit() {
-    this.loadingController.create({
-      message: 'Cargando clientes...'
-    }).then((loading) => {
-      loading.present();
-      this.authService.getUserProfile().subscribe((userProfile) => { // Lógica para obtener el perfil del usuario
-        console.log('userProfile', userProfile);
-        this.user = userProfile;
+  ngOnInit() { }
 
-        if (this.user.id && this.user.role == 'rrpp') {
+  ionViewDidEnter() {
+    this.getUserInfo();
+  }
+
+  getUserInfo() {
+    this.authService.getUserProfile().subscribe(data => {
+      this.user = data;
+      if (data) {
+        this.user['avatarImg'] = data['avatarImg'];
+      }
+      console.log('user', this.user);
+      console.log('userid', this.user.id);
+
+      if (this.user.id) {
+        if (this.user.role === 'rrpp') {
           this.getClients();
-        } else {
-          this.getAllClientsWithRRPPs();
+        } else if (this.user.role === 'adminrrpp') {
+          //
         }
-      });
-      loading.dismiss();
+      }
+
     });
   }
+
 
   getClients() { // Lógica para obtener los clientes del usuario
     this.clientService.getClientsByUserId(this.user.id).subscribe((clients) => {

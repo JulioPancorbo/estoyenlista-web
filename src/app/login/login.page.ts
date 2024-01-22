@@ -10,14 +10,13 @@ import { AlertController, LoadingController } from '@ionic/angular';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-
   // credentials: FormGroup = this.fb.group({
   //   email: ['', [Validators.required, Validators.email]],
   //   password: ['', [Validators.required, Validators.minLength(6)]]
   // });
 
-  email: string = "";
-  password: string = "";
+  email: string = '';
+  password: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -25,10 +24,9 @@ export class LoginPage implements OnInit {
     private router: Router,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController
-  ) { }
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   async login() {
     const loading = await this.loadingCtrl.create();
@@ -40,7 +38,10 @@ export class LoginPage implements OnInit {
     if (user) {
       this.router.navigateByUrl('/home', { replaceUrl: true });
     } else {
-      this.showAlert('Error al iniciar sesión', 'Por favor, comprueba que tu correo electrónico y contraseña sean correctos.');
+      this.showAlert(
+        'Error al iniciar sesión',
+        'Por favor, comprueba que tu correo electrónico y contraseña sean correctos.'
+      );
     }
   }
 
@@ -48,14 +49,9 @@ export class LoginPage implements OnInit {
     const alert = await this.alertCtrl.create({
       header,
       message,
-      buttons: ['OK']
+      buttons: ['OK'],
     });
 
     await alert.present();
   }
-
-  async goToRegister() {
-    this.router.navigateByUrl('/register'); //register page for normal users
-  }
-
 }

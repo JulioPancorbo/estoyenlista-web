@@ -55,16 +55,12 @@ export class AuthService {
   async createProfile(user: any, email: string, password: string, name: string) {
     const userDocRef = doc(this.firestore, `users/${user.uid}`); // Create a reference to the user document
     await setDoc(userDocRef, { email: email, password: password, name: name, role: 'rrpp' }); // Set the document
-    //* The role is set as 'user' by default. To add a 'creator', this should be developed in other function or something.
+    //* The role is set as 'rrpp' by default. To add an 'adminrrpp', add it from Firebase console.
   }
 
   async getCurrentUser() { // Get the current user
-    const user: any | null = this.auth.currentUser;
-    if (user) {
-      return user || null;
-    } else {
-      return null;
-    }
+    const user = this.auth.currentUser;
+    return user;
   }
 
   getUserProfile() { // Get the user profile with its document data

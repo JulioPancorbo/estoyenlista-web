@@ -1,27 +1,70 @@
-#container {
-  text-align: center;
+ion-header {
+  box-shadow: none;
 
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  ion-toolbar {
+    --background: var(--ion-color-primary);
+
+    ion-menu-button {
+      color: var(--ion-color-light);
+    }
+
+    ion-title {
+      color: var(--ion-color-light);
+    }
+  }
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
+ion-content {
+  --background: white;
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
 
-  color: #8c8c8c;
-
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+  // Estilos para la barra de búsqueda
+  ion-searchbar {
+    padding: 30px 20px;
+    --box-shadow: none;
+    --background: var(--ion-color-secondary);
+    --color: var(--ion-color-dark);
+    --border-radius: 10px;
+  }
+  
+  // Estilos para la lista de clientes
+  ion-list {
+    background: var(--ion-color-secondary);
+    margin: 20px;
+    border-radius: 10px;
+    padding-bottom: 5vh;
+  
+    ion-item {
+      background-color: white;
+      color: var(--ion-color-dark);
+      margin: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+      div {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        .client-name {
+          font-weight: bold;
+          font-size: 18px;
+        }
+      }
+    }
+  
+    p {
+      text-align: center;
+      color: #999;
+    }
+  }
+  
+  // Estilos para los botones
+  ion-button {
+    margin: 0 20px;
+    border-radius: 10px;
+    background: var(--ion-color-primary);
+    color: white;
+    --box-shadow: none;
+  } 
+  
 }
