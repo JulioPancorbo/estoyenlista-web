@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientService } from '../services/client.service';
+import { PartiesService } from '../services/parties.service';
 
 @Component({
   selector: 'app-rrpp-details',
@@ -14,14 +15,24 @@ export class RrppDetailsPage implements OnInit {
   public searchTerm: string = '';
   public partyId: any;
 
-  constructor(private clientService: ClientService) {
+  constructor(private clientService: ClientService, private partiesService: PartiesService) {
     this.rrppId = history.state.rrppId; // Obtenemos el id del RRPP que nos llega por parámetro
     this.partyId = history.state.partyId; // Obtenemos la fiesta seleccionada que nos llega por parámetro
     console.log('rrppId', this.rrppId);
     console.log('partyId', this.partyId);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getRRPP();
+    this.getClients();
+  }
+
+  getRRPP() {
+    this.partiesService.getRRPPById(this.rrppId).subscribe((rrpp) => {
+      console.log('rrpp', rrpp);
+      this.rrpp = rrpp;
+    });
+  }
 
   getClients() {
     this.clientService

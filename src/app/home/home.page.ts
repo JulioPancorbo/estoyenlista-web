@@ -8,6 +8,7 @@ import {
 import { AddClientModalPage } from '../add-client-modal/add-client-modal.page';
 import { AuthService } from '../services/auth.service';
 import { ClientService } from '../services/client.service';
+import { PartiesService } from '../services/parties.service';
 
 @Component({
   selector: 'app-home',
@@ -22,26 +23,7 @@ export class HomePage {
   public searchTerm: string = '';
   public partySelected: any;
   public isAPartySelected: boolean = false;
-  public parties: any[] = [
-    {
-      id: 1,
-      name: 'Fiesta de prueba 1',
-      place: 'Lugar de prueba 1',
-      date: '2020-10-10',
-    },
-    {
-      id: 2,
-      name: 'Fiesta de prueba 2',
-      place: 'Lugar de prueba 2',
-      date: '2020-10-11',
-    },
-    {
-      id: 3,
-      name: 'Fiesta de prueba 3',
-      place: 'Lugar de prueba 3',
-      date: '2020-10-12',
-    },
-  ];
+  public parties: any;
 
   constructor(
     private modalController: ModalController,
@@ -49,7 +31,8 @@ export class HomePage {
     private loadingController: LoadingController,
     private navCtrl: NavController,
     private authService: AuthService,
-    private clientService: ClientService
+    private clientService: ClientService,
+    private partiesService: PartiesService
   ) {}
 
   ngOnInit() {}
@@ -76,7 +59,14 @@ export class HomePage {
       console.log('user', this.user);
       console.log('userid', this.user.id);
 
-      //getParties();
+      this.getParties();
+    });
+  }
+
+  getParties() {
+    this.partiesService.getAllParties().subscribe((parties) => {
+      console.log('parties', parties);
+      this.parties = parties;
     });
   }
 
@@ -104,7 +94,8 @@ export class HomePage {
     }
   }
 
-  removeAccents(str) { //Lógica para remover acentos de una cadena de texto
+  removeAccents(str) {
+    //Lógica para remover acentos de una cadena de texto
     return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
 

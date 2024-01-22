@@ -45,7 +45,15 @@ export class PartiesService {
     // Get all the rrpp users
     const usersRef = collection(this.firestore, 'users');
     const rrppUsersQuery = query(usersRef, where('role', '==', 'rrpp'));
-    return collectionData(rrppUsersQuery, { idField: 'id' }) as Observable<User[]>;
+    return collectionData(rrppUsersQuery, { idField: 'id' }) as Observable<
+      User[]
+    >;
+  }
+
+  getRRPPById(rrppId: string) {
+    // Get the rrpp user by id
+    const userRef = doc(this.firestore, 'users', rrppId);
+    return docData(userRef) as Observable<User>;
   }
 
   getAllParties(): Observable<Party[]> {
