@@ -17,6 +17,22 @@ ion-header {
 ion-content {
   --background: white;
 
+  .party-dates {
+    display: flex;
+    flex-direction: row;
+    background: var(--ion-color-secondary);
+    margin: 20px 20px 0 20px;
+    padding: 10px;
+    border-radius: 10px;    
+
+    .selected-button {
+      background: var(--ion-color-success);
+    }
+
+    .unselected-button {
+      background: var(--ion-color-primary);
+    }
+  }
 
   // Estilos para la barra de búsqueda
   ion-searchbar {
@@ -26,14 +42,14 @@ ion-content {
     --color: var(--ion-color-dark);
     --border-radius: 10px;
   }
-  
+
   // Estilos para la lista de clientes
   ion-list {
     background: var(--ion-color-secondary);
     margin: 20px;
     border-radius: 10px;
     padding-bottom: 5vh;
-  
+
     ion-item {
       background-color: white;
       color: var(--ion-color-dark);
@@ -51,20 +67,20 @@ ion-content {
         }
       }
     }
-  
+
     p {
       text-align: center;
       color: #999;
     }
   }
-  
+
   // Estilos para los botones
   ion-button {
     margin: 0 20px;
     border-radius: 10px;
     background: var(--ion-color-primary);
     color: white;
+    padding: 5px;
     --box-shadow: none;
-  } 
-  
+  }
 }

@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { ModalController, AlertController, NavController, LoadingController } from '@ionic/angular';
+import {
+  ModalController,
+  AlertController,
+  NavController,
+  LoadingController,
+} from '@ionic/angular';
 import { AddClientModalPage } from '../add-client-modal/add-client-modal.page';
 import { AuthService } from '../services/auth.service';
 import { ClientService } from '../services/client.service';
@@ -10,12 +15,33 @@ import { ClientService } from '../services/client.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-
   public currentUser: any;
   public user: any;
   public clients: any[] = [];
   public filteredClients: any[] = [];
-  public searchTerm: string = "";
+  public searchTerm: string = '';
+  public partySelected: any;
+  public isAPartySelected: boolean = false;
+  public parties: any[] = [
+    {
+      id: 1,
+      name: 'Fiesta de prueba 1',
+      place: 'Lugar de prueba 1',
+      date: '2020-10-10',
+    },
+    {
+      id: 2,
+      name: 'Fiesta de prueba 2',
+      place: 'Lugar de prueba 2',
+      date: '2020-10-11',
+    },
+    {
+      id: 3,
+      name: 'Fiesta de prueba 3',
+      place: 'Lugar de prueba 3',
+      date: '2020-10-12',
+    },
+  ];
 
   constructor(
     private modalController: ModalController,
@@ -24,16 +50,25 @@ export class HomePage {
     private navCtrl: NavController,
     private authService: AuthService,
     private clientService: ClientService
-  ) { }
+  ) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   ionViewDidEnter() {
     this.getUserInfo();
   }
 
+  selectParty(party) {
+    console.log('party', party);
+    this.isAPartySelected = true;
+    if (party.id) {
+      this.partySelected = party;
+      this.getClients();
+    }
+  }
+
   getUserInfo() {
-    this.authService.getUserProfile().subscribe(data => {
+    this.authService.getUserProfile().subscribe((data) => {
       this.user = data;
       if (data) {
         this.user['avatarImg'] = data['avatarImg'];
@@ -41,56 +76,46 @@ export class HomePage {
       console.log('user', this.user);
       console.log('userid', this.user.id);
 
-      if (this.user.id) {
-        if (this.user.role === 'rrpp') {
-          this.getClients();
-        } else if (this.user.role === 'adminrrpp') {
-          //
-        }
-      }
-
+      //getParties();
     });
   }
 
-
-  getClients() { // Lógica para obtener los clientes del usuario
-    this.clientService.getClientsByUserId(this.user.id).subscribe((clients) => {
-      console.log('clients', clients);
-      this.clients = clients;
-      this.filteredClients = clients;
-    });
+  getClients() {
+    this.clientService
+      .getClientsByUserIdAndPartyId(this.user.id, this.partySelected.id)
+      .subscribe((clients) => {
+        console.log('clients', clients);
+        this.clients = clients;
+        this.filteredClients = clients;
+      });
   }
 
-  getAllClientsWithRRPPs() { // Lógica para obtener todos los clientes con sus RRPPs
-    console.log('getAllClientsWithRRPPs');
-  }
-
-  filterClients() { // Lógica para filtrar los clientes según el término de búsqueda    
-    if (this.searchTerm == "" || this.searchTerm == null) {
+  filterClients() {
+    // Lógica para filtrar los clientes según el término de búsqueda
+    if (this.searchTerm == '' || this.searchTerm == null) {
       this.filteredClients = this.clients;
       return;
     } else {
-      this.filteredClients = this.clients.filter(client =>
-        client.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      this.filteredClients = this.clients.filter((client) =>
+        this.removeAccents(client.name.toLowerCase()).includes(
+          this.removeAccents(this.searchTerm.toLowerCase())
+        )
       );
     }
   }
 
-  async openAddClientModal() { // Lógica para agregar el nuevo cliente a la lista de clientes
+  removeAccents(str) { //Lógica para remover acentos de una cadena de texto
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  async openAddClientModal() {
+    // Lógica para agregar el nuevo cliente a la lista de clientes
     const modal = await this.modalController.create({
       component: AddClientModalPage,
+      componentProps: {
+        party: this.partySelected,
+      },
     });
     await modal.present();
-
-    const { data } = await modal.onDidDismiss();
-    if (data) {
-      this.clients.push(data);
-      this.filteredClients = this.clients;
-    }
   }
-
-  goToProfile() {
-    this.navCtrl.navigateForward('/profile');
-  }
-
 }

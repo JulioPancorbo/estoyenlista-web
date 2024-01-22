@@ -3,31 +3,63 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>
-      Bienvenido {{ user?.name }} !
-    </ion-title>
+    <ion-title> Bienvenido {{ user?.name }} ! </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- Barra de búsqueda -->
-  <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterClients()" placeholder="Busca aquí..."></ion-searchbar>
+  <div class="party-dates">
+    <ion-card *ngFor="let party of parties">
+      <ion-card-header>
+        <ion-card-title>{{ party.name }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-icon name="calendar" slot="start"></ion-icon>
+          <ion-label>{{ party.date | date: 'dd/MM/yyyy' }}</ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="pin" slot="start"></ion-icon>
+          <ion-label>{{ party.place }}</ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-button
+            [ngClass]="{'selected-button': partySelected === party, 'unselected-button': partySelected !== party}"
+            expand="full"
+            fill="clear"
+            (click)="selectParty(party)"
+          >
+            {{partySelected === party ? 'Seleccionado' : 'Seleccionar'}}
+          </ion-button>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </div>
 
-  <!-- Botón para ir al perfil -->
-  <ion-button expand="full" fill="clear" (click)="openAddClientModal()">
-    <ion-icon name="add-circle-outline" slot="start"></ion-icon>
-    Añadir cliente
-  </ion-button>
+  <div class="client-list" *ngIf="isAPartySelected == true">
+    <!-- Barra de búsqueda -->
+    <ion-searchbar
+      [(ngModel)]="searchTerm"
+      (ionInput)="filterClients()"
+      placeholder="Busca aquí..."
+    ></ion-searchbar>
 
-  <!-- Lista de clientes -->
-  <ion-list>
-    <ion-item *ngFor="let client of filteredClients" lines="none">
-      <div>
-        <span class="client-name"> {{ client.name }} </span>
-        <span> - Invitados: {{ client.guests }}</span>
-        <span> - Confirmados: {{ client.guests_confirmed }} </span>
-      </div>
-    </ion-item>
-    <p *ngIf="clients.length === 0">Aún no tienes clientes añadidos</p>
-  </ion-list>
+    <!-- Botón para añadir cliente -->
+    <ion-button expand="full" fill="clear" (click)="openAddClientModal()">
+      <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+      Añadir cliente
+    </ion-button>
+
+    <!-- Lista de clientes -->
+    <ion-list>
+      <ion-item *ngFor="let client of filteredClients" lines="none">
+        <div>
+          <span class="client-name"> {{ client.name }} </span>
+          <span> - Invitados: {{ client.guests }}</span>
+          <span> - Confirmados: {{ client.guests_confirmed }} </span>
+        </div>
+      </ion-item>
+      <p *ngIf="clients.length === 0">Aún no tienes clientes añadidos</p>
+    </ion-list>
+  </div>
 </ion-content>
