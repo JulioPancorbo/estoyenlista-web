@@ -27,6 +27,14 @@ const routes: Routes = [
     path: 'profile',
     loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
   },
+  {
+    path: 'home-admin',
+    loadChildren: () => import('./home-admin/home-admin.module').then( m => m.HomeAdminPageModule)
+  },
+  {
+    path: 'rrpp-details',
+    loadChildren: () => import('./rrpp-details/rrpp-details.module').then( m => m.RrppDetailsPageModule)
+  },
 ];
 
 @NgModule({

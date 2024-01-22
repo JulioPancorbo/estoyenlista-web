@@ -1,0 +1,101 @@
+ion-header {
+  box-shadow: none;
+
+  ion-toolbar {
+    --background: var(--ion-color-primary);
+
+    ion-menu-button {
+      color: var(--ion-color-light);
+    }
+
+    ion-title {
+      color: var(--ion-color-light);
+    }
+  }
+}
+
+ion-content {
+  --background: white;
+
+  .party-dates,
+  .rrpp-list {
+    display: flex;
+    flex-direction: row;
+    background: var(--ion-color-secondary);
+    margin: 20px 20px 0 20px;
+    padding: 10px;
+    border-radius: 10px;
+
+    .selected-button {
+      background: var(--ion-color-success);
+    }
+
+    .unselected-button {
+      background: var(--ion-color-primary);
+    }
+
+    .rrpp-card {
+      background: var(--ion-color-primary);
+      margin: 20px;
+      border-radius: 10px;
+      padding: 20px;
+      width: auto;
+      text-transform: uppercase;
+      text-align: center;
+
+      ion-card-title {
+        color: white;        
+      }
+    }
+  }
+
+  // Estilos para la barra de búsqueda
+  ion-searchbar {
+    padding: 30px 20px;
+    --box-shadow: none;
+    --background: var(--ion-color-secondary);
+    --color: var(--ion-color-dark);
+    --border-radius: 10px;
+  }
+
+  // Estilos para la lista de clientes
+  ion-list {
+    background: var(--ion-color-secondary);
+    margin: 20px;
+    border-radius: 10px;
+    padding-bottom: 5vh;
+
+    ion-item {
+      background-color: white;
+      color: var(--ion-color-dark);
+      margin: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+      div {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        .client-name {
+          font-weight: bold;
+          font-size: 18px;
+        }
+      }
+    }
+
+    p {
+      text-align: center;
+      color: #999;
+    }
+  }
+
+  // Estilos para los botones
+  ion-button {
+    margin: 0 20px;
+    border-radius: 10px;
+    background: var(--ion-color-primary);
+    color: white;
+    padding: 5px;
+    --box-shadow: none;
+  }
+}
