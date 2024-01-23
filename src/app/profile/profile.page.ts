@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -8,44 +7,34 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
-
-  userEmail: string = '';
   user: any;
+  userProfile: any;
 
   constructor(
-    private navCtrl: NavController,
     private authService: AuthService
-  ) { }
+  ) {}
 
-  ngOnInit() { }
+  async ngOnInit() {
+    this.user = this.authService.getCurrentUser();
 
-  ionViewDidEnter() {
-    this.getUserInfo();
+    if (this.user) {
+      console.log('user', this.user);
+      this.getUserInfo();
+    }
   }
 
   getUserInfo() {
-    this.authService.getUserProfile().subscribe(data => {
-      this.user = data;
-      if (data) {
-        this.user['avatarImg'] = data['avatarImg'];
-      }
-      console.log('user', this.user);
-      console.log('userid', this.user.id);
-
-      if (this.user.id) {
-        if (this.user.role === 'rrpp') {
-          // 
-        } else if (this.user.role === 'adminrrpp') {
-          //
-        }
-      }
-
-    });
+    this.user = this.authService.getCurrentUser();
+    if (this.user) {
+      setTimeout(() => {
+        this.userProfile = this.authService.getUserProfile().subscribe(async (data) => {
+          this.userProfile = data;
+        });
+      }, 1000);
+    }
   }
 
   logout() {
     this.authService.logout();
-    this.navCtrl.navigateRoot('/login');
   }
-
 }

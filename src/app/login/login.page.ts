@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +16,7 @@ export class LoginPage implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router,
+    private navCtrl: NavController,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController
   ) {}
@@ -29,31 +28,38 @@ export class LoginPage implements OnInit {
     await loading.present();
 
     const user = await this.authService.login(this.email, this.password);
-    await loading.dismiss();
 
     if (user) {
       console.log('userAuth: ', user);
-      await this.getRole();
+      await this.getRole(loading);
     } else {
       this.showAlert(
         'Error al iniciar sesión',
         'Por favor, comprueba que tu correo electrónico y contraseña sean correctos.'
       );
+      await loading.dismiss();
     }
   }
 
-  async getRole() {
-    this.authService.getUserProfile().subscribe((data) => {
-      this.user = data;
-      console.log('userProfile: ', this.user);
-      console.log('userid: ', this.user.id);
-
-      if (this.user.role === 'adminrrpp') {
-        this.router.navigateByUrl('/home-admin');
-      } else {
-        this.router.navigateByUrl('/home');
-      }
-    });
+  async getRole(loading) {
+    this.user = this.authService.getCurrentUser();
+    
+    if (this.user) {
+      setTimeout(() => {
+        loading.dismiss();
+        this.user = this.authService.getUserProfile().subscribe((data) => {
+          this.user = data;
+          console.log('user', this.user);
+        });
+        if (this.user.role === 'adminrrpp') {
+          console.log('adminrrpp');
+          this.navCtrl.navigateRoot('/home-admin');
+        } else {
+          console.log('rrpp');
+          this.navCtrl.navigateRoot('/home');
+        }
+      }, 1000);
+    }
   }
 
   async showAlert(header: string, message: string) {

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from '../app/auth.guard';
 
 const routes: Routes = [
   {
@@ -9,15 +10,17 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
+    canActivate: [AuthGuard] // Protege la ruta
   },  
   {
     path: 'add-client-modal',
-    loadChildren: () => import('./add-client-modal/add-client-modal.module').then( m => m.AddClientModalPageModule)
+    loadChildren: () => import('./add-client-modal/add-client-modal.module').then( m => m.AddClientModalPageModule),
+    canActivate: [AuthGuard] // Protege la ruta
   },
   {
     path: 'register',
-    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule),
   },
   {
     path: 'login',
@@ -25,15 +28,18 @@ const routes: Routes = [
   },
   {
     path: 'profile',
-    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule),
+    canActivate: [AuthGuard] // Protege la ruta
   },
   {
     path: 'home-admin',
-    loadChildren: () => import('./home-admin/home-admin.module').then( m => m.HomeAdminPageModule)
+    loadChildren: () => import('./home-admin/home-admin.module').then( m => m.HomeAdminPageModule),
+    canActivate: [AuthGuard] // Protege la ruta
   },
   {
     path: 'rrpp-details',
-    loadChildren: () => import('./rrpp-details/rrpp-details.module').then( m => m.RrppDetailsPageModule)
+    loadChildren: () => import('./rrpp-details/rrpp-details.module').then( m => m.RrppDetailsPageModule),
+    canActivate: [AuthGuard] // Protege la ruta
   }
 ];
 

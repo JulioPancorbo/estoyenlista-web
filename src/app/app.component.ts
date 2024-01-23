@@ -11,7 +11,8 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent {
   user: any;
-  role: any;
+  userProfile: any;
+  role: string;
 
   constructor(
     private navCtrl: NavController,
@@ -22,25 +23,40 @@ export class AppComponent {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        if (event.urlAfterRedirects === '/login') {
+        console.log('event', event);
+        
+        if (event.urlAfterRedirects == '/login') {
+          console.log('entro aqui');
+          
           this.menu.enable(false);
         } else {
-          this.getUserInfo();          
+          console.log('entro alla');
+          
+          this.getUserInfo(event);          
         }
       });
   }
 
-  async getUserInfo() {
-    
-    this.authService.getUserProfile().subscribe((data) => {
-      this.user = data;      
-      console.log('user', this.user);
-      console.log('userid', this.user.id);
-      this.role = this.user.role;
-      console.log('role', this.role);
-      this.menu.enable(true);
-    });
-  
+  getUserInfo(event) {
+    if(event.urlAfterRedirects == '/login') {
+      console.log('entro aqui2');
+      
+      this.menu.enable(false);
+    }else{
+      console.log('entro alla2');
+      this.user = this.authService.getCurrentUser();
+      console.log('userioioio', this.user);
+      if(this.user) {
+        setTimeout(() => {
+          this.userProfile = this.authService.getUserProfile().subscribe((data) => {
+            this.userProfile = data;
+            console.log('userProfile', this.userProfile);
+            this.role = this.userProfile.role;
+            this.menu.enable(true);          
+          });
+        }, 1000);
+      }
+    }  
   }
 
   navigateTo(page: string) {

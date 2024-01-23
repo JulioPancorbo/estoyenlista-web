@@ -24,6 +24,7 @@ export class HomePage {
   public partySelected: any;
   public isAPartySelected: boolean = false;
   public parties: any;
+  public userProfile: any;
 
   constructor(
     private modalController: ModalController,
@@ -35,10 +36,16 @@ export class HomePage {
     private partiesService: PartiesService
   ) {}
 
-  ngOnInit() {}
+  async ngOnInit() {
+    const loading = await this.loadingController.create(); // Create a loading controller
+    await loading.present(); // Present the loading controller
 
-  ionViewDidEnter() {
-    this.getUserInfo();
+    this.user = this.authService.getCurrentUser();
+
+    if (this.user) {
+      console.log('user', this.user);
+      this.getUserInfo(loading);
+    }
   }
 
   selectParty(party) {
@@ -50,17 +57,18 @@ export class HomePage {
     }
   }
 
-  getUserInfo() {
-    this.authService.getUserProfile().subscribe((data) => {
-      this.user = data;
-      if (data) {
-        this.user['avatarImg'] = data['avatarImg'];
-      }
-      console.log('user', this.user);
-      console.log('userid', this.user.id);
-
-      this.getParties();
-    });
+  getUserInfo(loading) {
+    this.user = this.authService.getCurrentUser();
+    console.log('userioioio', this.user);
+    if (this.user) {
+      setTimeout(() => {
+        this.userProfile = this.authService.getUserProfile().subscribe(async (data) => {
+          this.userProfile = data;
+          await loading.dismiss(); // Dismiss the loading controller
+        });
+        this.getParties();
+      }, 1000);
+    }
   }
 
   getParties() {
@@ -70,9 +78,9 @@ export class HomePage {
     });
   }
 
-  getClients() {
+  getClients() {    
     this.clientService
-      .getClientsByUserIdAndPartyId(this.user.id, this.partySelected.id)
+      .getClientsByUserIdAndPartyId(this.userProfile.id, this.partySelected.id)
       .subscribe((clients) => {
         console.log('clients', clients);
         this.clients = clients;

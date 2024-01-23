@@ -23,7 +23,7 @@ export class HomeAdminPage implements OnInit {
   public partySelected: any;
   public rrppSelected: any;
   public isAPartySelected: boolean = false;
-  public isARrppSelected: boolean = false;  
+  public isARrppSelected: boolean = false;
   public parties: any;
   public rrpps: any;
 
@@ -37,23 +37,21 @@ export class HomeAdminPage implements OnInit {
     private partiesService: PartiesService
   ) {}
 
-  ngOnInit() {}
+  async ngOnInit() {
+    const loading = await this.loadingController.create(); // Create a loading controller
+    await loading.present(); // Present the loading controller
 
-  ionViewDidEnter() {
-    this.getUserInfo();
+    this.user = this.authService.getCurrentUser();
+
+    if (this.user) {
+      console.log('user', this.user);
+      this.getAdminInfo(loading);
+    }
   }
 
-  getUserInfo() {
-    this.authService.getUserProfile().subscribe((data) => {
-      this.user = data;      
-      console.log('user', this.user);
-      console.log('userid', this.user.id);
-
-      if(this.user) {
-        this.getParties();
-        this.getRRPPs();
-      }
-    });
+  async getAdminInfo(loading) {
+    this.getParties();
+    this.getRRPPs(loading);
   }
 
   getParties() {
@@ -63,10 +61,11 @@ export class HomeAdminPage implements OnInit {
     });
   }
 
-  getRRPPs() {
+  getRRPPs(loading) {
     this.partiesService.getRRPPs().subscribe((rrpps) => {
       console.log('rrpps', rrpps);
       this.rrpps = rrpps;
+      loading.dismiss(); // Dismiss the loading controller
     });
   }
 
