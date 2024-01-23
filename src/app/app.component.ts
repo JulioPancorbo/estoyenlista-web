@@ -26,12 +26,10 @@ export class AppComponent {
         console.log('event', event);
         
         if (event.urlAfterRedirects == '/login') {
-          console.log('entro aqui');
-          
+          console.log('entro aqui');          
           this.menu.enable(false);
         } else {
-          console.log('entro alla');
-          
+          console.log('entro alla');          
           this.getUserInfo(event);          
         }
       });

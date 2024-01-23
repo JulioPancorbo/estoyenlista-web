@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, LoadingController, NavController } from '@ionic/angular';
+import { AlertController, LoadingController, NavController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
@@ -20,7 +20,8 @@ export class RegisterPage implements OnInit {
     private router: Router,
     private navCtrl: NavController,
     private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private toastController: ToastController
   ) { }
 
   ngOnInit() { }
@@ -50,7 +51,11 @@ export class RegisterPage implements OnInit {
     await loading.dismiss();
 
     if (user) {
-      this.router.navigateByUrl('/home', { replaceUrl: true });
+      // this.router.navigateByUrl('/home', { replaceUrl: true });
+      this.toastController.create({
+        message: 'Usuario registrado correctamente.',
+        duration: 2000
+      }).then(toast => toast.present());
     } else {
       this.showAlert('Error al registrarse', 'Por favor, inténtelo de nuevo.');
     }

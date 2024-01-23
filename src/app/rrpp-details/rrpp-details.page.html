@@ -20,13 +20,25 @@
     <!-- Lista de clientes -->
     <ion-list>
       <ion-item *ngFor="let client of filteredClients" lines="none">
-        <div>
-          <span class="client-name"> {{ client.name }} </span>
-          <span> - Invitados: {{ client.guests }}</span>
-          <span> - Confirmados: {{ client.guests_confirmed }} </span>
+        <div class="client-div">
+          <div class="client-info">
+            <span class="client-name"> {{ client.name }} </span>
+            <span> - Invitados: {{ client.guests }}</span>
+            <span> - Confirmados: {{ client.guests_confirmed }} </span>
+          </div>
+          <div class="div-buttons">
+            <ion-button fill="clear" (click)="confirmGuests(client)" [disabled]="client.guests_confirmed === client.guests">
+              <ion-icon name="checkmark-circle-outline"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" (click)="openEditClientAlert(client)">
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
+          </div>
         </div>
       </ion-item>
-      <p *ngIf="clients.length === 0">Aún no tienes clientes añadidos</p>
+      <p *ngIf="clients.length === 0">Este RRPP aún no tiene clientes añadidos</p>
     </ion-list>
+
+    
   </div>
 </ion-content>

@@ -21,6 +21,7 @@ ion-content {
   .rrpp-list {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     background: var(--ion-color-secondary);
     margin: 20px 20px 0 20px;
     padding: 10px;
@@ -36,9 +37,7 @@ ion-content {
 
     .rrpp-card {
       background: var(--ion-color-primary);
-      margin: 20px;
       border-radius: 10px;
-      padding: 20px;
       width: auto;
       text-transform: uppercase;
       text-align: center;

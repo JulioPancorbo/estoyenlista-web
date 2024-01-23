@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title> Bienvenido {{ userProfile?.name }} ! </ion-title>
+    <ion-title> Ver todos los clientes </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -42,16 +42,11 @@
       [(ngModel)]="searchTerm"
       (ionInput)="filterClients()"
       placeholder="Busca aquí..."
-    ></ion-searchbar>
-
-    <!-- Botón para añadir cliente -->
-    <ion-button expand="full" fill="clear" (click)="openAddClientModal()">
-      <ion-icon name="add-circle-outline" slot="start"></ion-icon>
-      Añadir cliente
-    </ion-button>
+    ></ion-searchbar>    
 
     <!-- Lista de clientes -->
-    <ion-list>
+    <ion-list>            
+      <p class="counter">TOTAL : {{ totalPersons }}</p>
       <ion-item *ngFor="let client of filteredClients" lines="none">
         <div class="client-div">
           <div class="client-info">
@@ -59,14 +54,17 @@
             <span> - Invitados: {{ client.guests }}</span>
             <span> - Confirmados: {{ client.guests_confirmed }} </span>
           </div>
-          <div>
-            <ion-button class="delete-button" fill="clear" (click)="deleteClient(client)">
-              <ion-icon name="trash" slot="icon-only"></ion-icon>
+          <div class="div-buttons">
+            <ion-button fill="clear" (click)="confirmGuests(client)" [disabled]="client.guests_confirmed === client.guests">
+              <ion-icon name="checkmark-circle-outline"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" (click)="openEditClientAlert(client)">
+              <ion-icon name="create-outline"></ion-icon>
             </ion-button>
           </div>
         </div>
       </ion-item>
-      <p *ngIf="clients.length === 0">Aún no tienes clientes añadidos</p>
+      <p *ngIf="clients.length === 0">Este evento aún no tiene clientes añadidos</p>
     </ion-list>
   </div>
 </ion-content>

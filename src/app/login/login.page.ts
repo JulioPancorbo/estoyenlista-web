@@ -12,6 +12,7 @@ export class LoginPage implements OnInit {
   email: string = '';
   password: string = '';
   user: any;
+  userProfile: any;
 
   constructor(
     private fb: FormBuilder,
@@ -31,7 +32,8 @@ export class LoginPage implements OnInit {
 
     if (user) {
       console.log('userAuth: ', user);
-      await this.getRole(loading);
+      this.user = user;
+      this.getRole(loading);
     } else {
       this.showAlert(
         'Error al iniciar sesión',
@@ -41,23 +43,21 @@ export class LoginPage implements OnInit {
     }
   }
 
-  async getRole(loading) {
-    this.user = this.authService.getCurrentUser();
-    
+  getRole(loading) { 
     if (this.user) {
       setTimeout(() => {
         loading.dismiss();
-        this.user = this.authService.getUserProfile().subscribe((data) => {
-          this.user = data;
-          console.log('user', this.user);
+        this.userProfile = this.authService.getUserProfile().subscribe((data) => {
+          this.userProfile = data;
+          console.log('userProfile', this.userProfile);
+          if (this.userProfile.role === 'adminrrpp') {
+            console.log('adminrrpp');
+            this.navCtrl.navigateRoot('/home-admin');
+          } else {
+            console.log('rrpp');
+            this.navCtrl.navigateRoot('/home');
+          }
         });
-        if (this.user.role === 'adminrrpp') {
-          console.log('adminrrpp');
-          this.navCtrl.navigateRoot('/home-admin');
-        } else {
-          console.log('rrpp');
-          this.navCtrl.navigateRoot('/home');
-        }
       }, 1000);
     }
   }

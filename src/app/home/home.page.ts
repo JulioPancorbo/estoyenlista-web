@@ -117,4 +117,39 @@ export class HomePage {
     });
     await modal.present();
   }
+
+  async deleteClient(client) {
+    // Lógica para eliminar un cliente
+
+    const alert = await this.alertController.create({
+      header: 'Eliminar cliente',
+      message: '¿Estás seguro de que quieres eliminar a ' + client.name + '?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancelar clicked');
+          },
+        },
+        {
+          text: 'Eliminar',
+          handler: () => {
+            console.log('Eliminar clicked');
+            this.clientService.deleteClient(client.id).then(() => {
+              console.log('Cliente eliminado correctamente');
+              this.alertController.create({
+                header: 'Cliente eliminado',
+                message: 'El cliente ha sido eliminado correctamente.',
+                buttons: ['OK'],
+              });             
+            });
+          },
+        }
+      ],      
+    });
+
+    await alert.present();
+
+  }
 }

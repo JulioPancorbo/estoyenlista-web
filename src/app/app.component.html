@@ -25,10 +25,14 @@
             <ion-icon name="home" slot="start"></ion-icon>
             <ion-label>Inicio</ion-label>
           </ion-item>
+          <ion-item (click)="navigateTo('all-clients')">
+            <ion-icon name="people" slot="start"></ion-icon>
+            <ion-label>Ver todos los clientes</ion-label>
+          </ion-item>
           <ion-item (click)="navigateTo('profile')">
             <ion-icon name="person" slot="start"></ion-icon>
             <ion-label>Perfil</ion-label>
-          </ion-item>
+          </ion-item>          
           <!-- Agrega más elementos según tus páginas -->
         </ion-list>
       </ion-content>

@@ -26,6 +26,7 @@ export class HomeAdminPage implements OnInit {
   public isARrppSelected: boolean = false;
   public parties: any;
   public rrpps: any;
+  public userProfile: any;
 
   constructor(
     private modalController: ModalController,
@@ -45,13 +46,25 @@ export class HomeAdminPage implements OnInit {
 
     if (this.user) {
       console.log('user', this.user);
-      this.getAdminInfo(loading);
+      this.getUserInfo(loading);
     }
   }
 
-  async getAdminInfo(loading) {
-    this.getParties();
-    this.getRRPPs(loading);
+  getUserInfo(loading) {
+    this.user = this.authService.getCurrentUser();
+    console.log('userioioio', this.user);
+    if (this.user) {
+      setTimeout(async () => {
+        this.userProfile = this.authService
+          .getUserProfile()
+          .subscribe(async (data) => {
+            this.userProfile = data;
+          });
+        this.getParties();
+        this.getRRPPs();
+        await loading.dismiss();
+      }, 1000);
+    }
   }
 
   getParties() {
@@ -61,11 +74,10 @@ export class HomeAdminPage implements OnInit {
     });
   }
 
-  getRRPPs(loading) {
+  getRRPPs() {
     this.partiesService.getRRPPs().subscribe((rrpps) => {
       console.log('rrpps', rrpps);
-      this.rrpps = rrpps;
-      loading.dismiss(); // Dismiss the loading controller
+      this.rrpps = rrpps;      
     });
   }
 

@@ -37,3 +37,16 @@
     font-display: swap;
     src: url(https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJfecg.woff2) format('woff2');
 }
+
+.edit-client-alert {
+    --width: 50vw !important;
+
+    .alert-title {
+        font-size: 1.5rem !important;
+    }
+
+    .alert-message {
+        font-size: 1.25rem !important;
+        padding-bottom: 0 !important;
+    }
+}

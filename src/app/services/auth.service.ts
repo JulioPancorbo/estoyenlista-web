@@ -65,7 +65,6 @@ export class AuthService {
   }
 
   logout() {
-    // this.isAuthenticated = false;
     localStorage.removeItem('user');
     this.auth.signOut();
     this.navCtrl.navigateRoot('/login');
@@ -95,8 +94,6 @@ export class AuthService {
 
   getUserProfile() {
     const user2 = this.auth.currentUser; // Get the current user
-    console.log('userrrrr: ', user2);
-
     const userDocRef = doc(this.firestore, `users/${user2.uid}`); // Get the reference to the user document
     return docData(userDocRef, { idField: 'id' }) as Observable<User>; // Get the user document data as an observable with the id field
   }

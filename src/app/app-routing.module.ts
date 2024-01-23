@@ -40,6 +40,11 @@ const routes: Routes = [
     path: 'rrpp-details',
     loadChildren: () => import('./rrpp-details/rrpp-details.module').then( m => m.RrppDetailsPageModule),
     canActivate: [AuthGuard] // Protege la ruta
+  },
+  {
+    path: 'all-clients',
+    loadChildren: () => import('./all-clients/all-clients.module').then( m => m.AllClientsPageModule),
+    canActivate: [AuthGuard] // Protege la ruta
   }
 ];
 

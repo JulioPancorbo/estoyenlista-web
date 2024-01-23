@@ -50,9 +50,24 @@ export class ClientService {
     }
   }
 
-  getAllClientsByPartyId(): Observable<Client[]> { //get all clients from a party (for adminrrpp users only)
+  deleteClient(clientId: string): Promise<any> { //delete a client
+    const clientRef = doc(this.firestore, `clients/${clientId}`);
+    return deleteDoc(clientRef);
+  }
+
+  confirmGuests(clientId: string, guests: number): Promise<any> { //confirm guests
+    const clientRef = doc(this.firestore, `clients/${clientId}`);
+    return updateDoc(clientRef, { guests_confirmed: guests, updatedAt: Timestamp.now() });
+  }
+
+  editClient(clientId: string, client: Client): Promise<any> { //edit a client
+    const clientRef = doc(this.firestore, `clients/${clientId}`);
+    return updateDoc(clientRef, { guests: client.guests, guests_confirmed: client.guests_confirmed, updatedAt: Timestamp.now() });
+  }
+
+  getAllClientsByPartyId(partyId: string): Observable<Client[]> { //get all clients from a party (for adminrrpp users only)
     const clientsRef = collection(this.firestore, 'clients');
-    const partyClientsQuery = query(clientsRef, where('partyId', '==', this.clientId));
+    const partyClientsQuery = query(clientsRef, where('partyId', '==', partyId));
     return collectionData(partyClientsQuery, { idField: 'id' }) as Observable<Client[]>;
   }
 
