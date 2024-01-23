@@ -69,3 +69,4 @@ Thumbs.db
 
 # Carpeta de archivos generados durante la construcción
 /public
+/.firebase
